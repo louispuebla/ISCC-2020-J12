@@ -1,56 +1,87 @@
 <!DOCTYPE html>
-
 <html>
-    <meta charset="utf-8">
-<header>
-    <title>Mini site routing</title>
-    <A HREF="http://localhost/ISCC/J09/EX_01/mini-site-routing.php?page=1">ACCUEIL</A> 
-    <A HREF="http://localhost/ISCC/J09/EX_01/mini-site-routing.php?page=2">PAGE 1</A> 
-    <A HREF="http://localhost/ISCC/J09/EX_01/mini-site-routing.php?page=3">PAGE 2</A>
-    <A HREF="http://localhost/ISCC/J09/EX_01/mini-site-routing.php?page=connexion">PAGE CONNEXION</A>
-    <A HREF="http://localhost/ISCC/J09/EX_01/mini-site-routing.php?page=admin">ADMIN</A>
+<head>
+<title>mini-site-routing</title>
+<meta charset="utf-8">
+ <head>
+ </head>
+    <body>
+    <nav>
+    <a href="http://localhost:8888/ISCC-2020/ISCC-2020-J12/EX_01/mini-site-routing.php?page=1">Accueil!</a>
+    <a href="http://localhost:8888/ISCC-2020/ISCC-2020-J12/EX_01/mini-site-routing.php?page=2">Page 2</a>
+    <a href="http://localhost:8888/ISCC-2020/ISCC-2020-J12/EX_01/mini-site-routing.php?page=3">Page 3</a>
+    <a href="http://localhost:8888/ISCC-2020/ISCC-2020-J12/EX_01/mini-site-routing.php?page=connexion">Connexion</a>
+    
+    
+    <?php
+  
+  if($_COOKIE['id']){
+    echo '<a href="http://localhost:8888/ISCC-2020/ISCC-2020-J12/EX_01/mini-site-routing.php?page=admin">Admin</a>';
+  }
+  ?>
+  </nav>
 
-</header>
-
-<body>
-
+ 
 <?php
-session_start();
-    if($_GET['page'] ==1){
-   echo '<h1>Accueil !</h1>';
-
+if($_GET['page'] == '1')
+{
+    echo '<h1>Accueil !</h1>';
 }
-    elseif($_GET['page'] ==2){
-    echo '<h1>Page 2 !</h1>';
+if($_GET["page"] == "2")
+{
+    echo '<h1>Page 2 </h1>';
 }
-    elseif ($_GET['page'] ==3){
-    echo '<h1>Page 3 !</h1>';
+if($_GET["page"] == "3")
+{
+    echo '<h1>Page 3 </h1>';
 }
-    elseif ($_GET['page'] =='connexion'){
-    echo '<h1>Connexion</h1>';
-    include("connexion.php");
+if($_GET['page'] == 'connexion')
+{
+echo '<h1>Connexion</h1>';
+include('connexion.php');
 }
-    elseif ($_GET['page'] =='admin'){
-    echo '<h1>Admin</h1>';
-    include("admin.php");
-}
-?>
-
+if($_GET['page'] == 'admin')
+{
+  echo '<h1>Admin</h1>';
+  ?>
+<form enctype="multipart/form-data" action="admin.php" method="post">
+    <input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
+    <input name="userfile" type="file" accept="image/x-png,image/jpg,image/jpeg"/>
+    <input name="description" type="text" placeholder="Description"/>
+    <input name="titre" type="text" placeholder="Titre"/>
+    <input type="submit" value="Envoyer le fichier" />
+    
+  </form>
 <?php
-    if(array_key_exists('id', $_SESSION)){
-    echo 'Login: '.$_SESSION['id'];
-    }
+  include('admin.php');
+}
+?> 
+<img src="uploaded/téléchargement.jpeg" alt= "photo upload">
 
-    if(!array_key_exists('id', $_SESSION)){
-        if($_COOKIE['id']){
-            $_SESSION['id']=$_COOKIE['id'];
-        }
-        else{
-        echo '<p><A HREF="http://localhost/ISCC/J09/EX_01/mini-site-routing.php?page=connexion"></p>';
-        }
-    }
-?>
+
+
 </body>
-<footer>
-</footer>
-</html>
+
+    <footer>
+    <?php
+     session_start();
+    if(isset($_SESSION["id"])) {
+      session_start();
+    echo '<p> Login : ' .$_SESSION["id"]. '</p>';
+    
+}
+
+elseif(!isset($_COOKIE['id'])){
+  session_start();
+    $_SESSION['id'] = $_POST['login'];
+    $_SESSION['mdp'] = $_POST['password'];
+    
+}
+else{
+    header('http://localhost:8888/ISCC-2020/ISCC-2020-J12/EX_01/mini-site-routing.php?page=connexion');
+}
+
+?>
+
+    </footer>
+    </html>

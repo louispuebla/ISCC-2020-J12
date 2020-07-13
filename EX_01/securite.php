@@ -1,40 +1,62 @@
-<?php
-    $login=$_POST['login'];
-    $password=$_POST['password'];
+<?php 
+session_start();
 
-
-        if ($password ==  "2020"){
-            session_start();
-            $_SESSION['id']=$login;
-            setcookie('id', $_SESSION['id'], time() +365*24*3600, null, null, false, true);
-            header('Location: http://localhost/ISCC/J09/EX_01/mini-site-routing.php?page=1');
-            exit();
-        }
-            
-
-        else{
-            echo '<h3>Mauvais couple identifiant / mot de passe.</h3>';
-            echo '<p><A HREF="http://localhost/ISCC/J09/EX_01/mini-site-routing.php?page=connexion">Réessayer</A></p>';
-        }
+echo $_POST['login'];
+echo '<br>';
+echo $_POST['password'];
+echo '<br>';
 
 function connect_to_database(){
-    $servername = "localhost";
+    $servername = 'localhost';
     $username = 'root';
-    $password = '';
-    $databasename = "basetest01";
+    $password = 'root';
+    $databasename = "base-site-rooting";
 
-try{
-    $pdo = new PDO("mysql:host=$servername;dbname=$databasename", $username, $password);
+
+try {
+    $pdo=new PDO("mysql:host=$servername;dbname=$databasename", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+ 
+    echo "<p> Vous êtes connecté</p>";
+    return $pdo;
+}
+catch (PDOException $e) {
+    echo "<p> Vous n'êtes pas connecté</p>".$e->getMessage();
+}
+}
+function login($pdo)
+{
+    try{
+        if (!empty($_POST['login'])&& !empty($_POST['password'])){
+            $login = $_POST['login'];
+            $password = $_POST['password'];
+            
+            $requete=$pdo->query("SELECT passwordd
+            FROM utilisateurs
+            WHERE login='login'");
+        $res=$requete->fetchAll();
 
-    $sql="INSERT INTO produit(id, nom, description, prix, quantite)
-    VALUES (8, 'T-shirt noir', 'T-shirt coton de couleur noire', 15.50, 10)";
-    $pdo->exec($sql);
-    echo "Ajout réussi";
+        if($res){
+            if ($password == $res [0]['passwordd']){
+                echo "Connexion réussie : bon couple identifiant / mot de passe.";
+            } else{
+                echo "Mauvais couple identifiant / mot de passe.";
+
+            }
+        }else{
+                echo '<a href="http://localhost:8888/ISCC-2020/ISCC-2020-J12/EX_01/mini-site-routing.php?page=connexion"</a>';
+            }
+            }
+        } catch (PDOException $e){
+            echo "Login erreur " . $e->getMessage();        
+    }
 }
-catch (PDOException $e){
-    echo "Echec de connexion : ". $e->getMessage();
+
+$pdo = connect_to_database();
+login($pdo);
+
+$clied = array_keys($_SESSION);
+if (array_key_exists('id', $_SESSION) == true) {
+    setcookie($cleid['id']);
 }
-}
-connect_to_database();
 ?>

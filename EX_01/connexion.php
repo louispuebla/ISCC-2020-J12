@@ -1,24 +1,21 @@
-<?php $page = 'page connexion'?>
-
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <title>Connexion</title>
-    <meta charset="utf-8">
-
-<body>
-<form method="POST" action="securite.php">
-        <label for="login">Login</label>
-    <div id="login">
-        <input type="text" name="login" id="login">
-    </div>
-
-    
-        <label for="password">Password</label>
-    <div id="password">
-        <input type="text" name="password" id="password">  
-    </div>
-
-    <input type="submit" value="Envoyer">
-    </form>
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+<form method="POST" action="http://localhost:8888/ISCC-2020/ISCC-2020-J09/EX_01/securite.php">
+                    <p>
+                        <label>Login</label> : <input class="hauteur" type="text" name="login" id="login" autofocus required/>
+                    </p>
+                    <p>
+                        <label>Password</label> : <input class="hauteur" type="password" name="password" id="password" required>
+                    </p>        
+                        <div class="bouton">
+                            <p>
+                        <button type="submit" value="Connexion">Connexion</button>
+                        </p>
+                        </div>
+                </form>
 </body>
-</html>
+<html>
